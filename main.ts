@@ -1,4 +1,5 @@
 const audioContext = new AudioContext();
+audioContext.suspend();
 const infoText: Text = document.getElementById('info')!.appendChild(document.createTextNode(''));
 
 console.log(audioContext);
@@ -10,7 +11,6 @@ class Generator {
 
     constructor() {
         this.tr = document.createElement('tr');
-        this.tr.appendChild(document.createElement('td')).appendChild(this.createEnableCheckbox());
         this.tr.appendChild(document.createElement('td')).appendChild(this.createTypeSelect());
         this.tr.appendChild(document.createElement('td')).appendChild(this.createFrequencyInput());
         this.tr.appendChild(document.createElement('td')).appendChild(this.createGainInput());
@@ -19,19 +19,7 @@ class Generator {
         this.gain.connect(audioContext.destination);
 
         document.querySelector('tbody')!.appendChild(this.tr);
-    }
-
-    private createEnableCheckbox(): HTMLInputElement {
-        const input = document.createElement('input');
-        input.type = 'checkbox';
-        input.addEventListener('change', () => {
-            if (input.checked) {
-                this.oscilator.start();
-            } else {
-                this.oscilator.stop();
-            }
-        });
-        return input;
+        this.oscilator.start();
     }
 
     private createTypeSelect(): HTMLSelectElement {
@@ -73,7 +61,7 @@ class Generator {
         const input = document.createElement('input');
         input.type = 'range';
         input.min = '0';
-        input.max = '2';
+        input.max = '3';
         input.step = '0.05';
         input.value = '0.5';
         const change = () => {
@@ -90,3 +78,13 @@ class Generator {
 }
 
 new Generator();
+
+document.getElementById('add')!.addEventListener('click', () => new Generator());
+const pause = document.getElementById('pause') as HTMLInputElement;
+pause.addEventListener('change', () => {
+    if (pause.checked) {
+        audioContext.suspend();
+    } else {
+        audioContext.resume();
+    }
+});
