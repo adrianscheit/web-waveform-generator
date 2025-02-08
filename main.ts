@@ -63,7 +63,7 @@ class Generator {
         input.min = '0';
         input.max = '3';
         input.step = '0.05';
-        input.value = '0.5';
+        input.value = '0';
         const change = () => {
             this.gain.gain.value = +input.value;
             text.nodeValue = `${Math.round(+input.value * 100)}%`;
