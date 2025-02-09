@@ -8,7 +8,8 @@ export class Channels {
         const channelCount = audioContext.destination.channelCount;
         this.channelMerger = audioContext.createChannelMerger(channelCount);
         for (let i = 0; i < channelCount; ++i) {
-            const newChannel = new Channel(audioContext, i, this.channelMerger);
+            const newChannel = new Channel(audioContext, i);
+            newChannel.gain.connect(this.channelMerger, 0, i)
             this.element.appendChild(newChannel.element);
         }
         this.channelMerger.connect(audioContext.destination);

@@ -12,7 +12,7 @@ export class Generator {
         this.tr = document.createElement('tr');
         this.tr.appendChild(document.createElement('td')).appendChild(this.createTypeSelect());
         this.tr.appendChild(document.createElement('td')).appendChild(this.createFrequencyInput());
-        this.tr.appendChild(document.createElement('td')).appendChild(this.createGainInput());
+        this.tr.appendChild(document.createElement('td')).appendChild(Generator.createGainInput(this.gain));
 
         this.oscilator.connect(this.waveShaper);
         this.waveShaper.connect(this.gain);
@@ -53,7 +53,7 @@ export class Generator {
         return label;
     }
 
-    private createGainInput(): HTMLLabelElement {
+    static createGainInput(gain: GainNode): HTMLLabelElement {
         const text = document.createTextNode('');
         const input = document.createElement('input');
         input.type = 'range';
@@ -62,7 +62,7 @@ export class Generator {
         input.step = '0.05';
         input.value = '0.5';
         const change = () => {
-            this.gain.gain.value = +input.value;
+            gain.gain.value = +input.value;
             text.nodeValue = `${Math.round(+input.value * 100)}%`;
         };
         input.addEventListener('change', () => change());
