@@ -4,7 +4,7 @@ export class Channels {
     readonly channelMerger: ChannelMergerNode;
     readonly element: HTMLElement = document.createElement('div');
 
-    constructor(private readonly audioContext: AudioContext) {
+    constructor(audioContext: AudioContext) {
         const channelCount = audioContext.destination.channelCount;
         this.channelMerger = audioContext.createChannelMerger(channelCount);
         for (let i = 0; i < channelCount; ++i) {

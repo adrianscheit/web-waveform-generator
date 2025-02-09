@@ -6,7 +6,9 @@ const infoText: Text = document.getElementById('info')!.appendChild(document.cre
     `destination ${audioContext.destination.numberOfInputs} channelCount ${audioContext.destination.channelCount}`
 ));
 console.log(audioContext);
-document.getElementById('channels')!.appendChild(new Channels(audioContext).element);
+const channels = new Channels(audioContext);
+document.getElementById('channels')!.appendChild(channels.element);
+console.log(channels);
 const pause = document.getElementById('pause') as HTMLInputElement;
 pause.addEventListener('change', () => {
     if (pause.checked) {

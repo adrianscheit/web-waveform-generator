@@ -14,6 +14,7 @@ export class Channel {
         const tr = table.appendChild(document.createElement('tr'));
         tr.appendChild(document.createElement('th')).appendChild(document.createTextNode('Type'));
         tr.appendChild(document.createElement('th')).appendChild(document.createTextNode('Frequency'));
+        tr.appendChild(document.createElement('th')).appendChild(document.createTextNode('Wave Shaper'));
         tr.appendChild(document.createElement('th')).appendChild(document.createTextNode('Gain'));
         const tbody = table.appendChild(document.createElement('tbody'));
         const button = this.element.appendChild(document.createElement('button'));
@@ -21,7 +22,7 @@ export class Channel {
         button.addEventListener('click', () => {
             const newGenerator = new Generator(audioContext);
             tbody.appendChild(newGenerator.tr);
-            newGenerator.gain.connect(this.gain, 0, index);
+            newGenerator.gain.connect(this.gain);
         });
     }
 }

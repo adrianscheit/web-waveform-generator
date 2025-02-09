@@ -12,6 +12,7 @@ export class Generator {
         this.tr = document.createElement('tr');
         this.tr.appendChild(document.createElement('td')).appendChild(this.createTypeSelect());
         this.tr.appendChild(document.createElement('td')).appendChild(this.createFrequencyInput());
+        this.tr.appendChild(document.createElement('td')).appendChild(this.createWaveShaperInput());
         this.tr.appendChild(document.createElement('td')).appendChild(Generator.createGainInput(this.gain));
 
         this.oscilator.connect(this.waveShaper);
@@ -19,6 +20,7 @@ export class Generator {
         this.gain.connect(audioContext.destination);
 
         this.oscilator.start();
+        console.log(this);
     }
 
     private createTypeSelect(): HTMLSelectElement {
@@ -50,6 +52,18 @@ export class Generator {
         const label = document.createElement('label');
         label.appendChild(input);
         label.appendChild(document.createTextNode('Hz'));
+        return label;
+    }
+
+    private createWaveShaperInput(): HTMLLabelElement {
+        const label = document.createElement('label');
+        const percentInput = label.appendChild(document.createElement('input'));
+        percentInput.type = 'number';
+        percentInput.min = '0';
+        percentInput.max = '100';
+        percentInput.step = '1';
+        percentInput.disabled = true;
+        label.appendChild(document.createTextNode('%'));
         return label;
     }
 
