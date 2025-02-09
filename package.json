@@ -4,11 +4,13 @@
   "description": "WEB Osciloscope",
   "main": "index.js",
   "scripts": {
-    "build": "tsc"
+    "build": "webpack"
   },
   "author": "",
   "license": "UNLICENSED",
   "devDependencies": {
-    "typescript": "5"
+    "ts-loader": "9",
+    "typescript": "5",
+    "webpack-cli": "6"
   }
 }

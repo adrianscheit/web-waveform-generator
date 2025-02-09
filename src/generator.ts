@@ -1,15 +1,12 @@
-const audioContext = new AudioContext();
-audioContext.suspend();
-const infoText: Text = document.getElementById('info')!.appendChild(document.createTextNode(''));
-
-console.log(audioContext);
-
-class Generator {
-    readonly oscilator = audioContext.createOscillator();
-    readonly gain = audioContext.createGain();
+export class Generator {
+    readonly oscilator: OscillatorNode;
+    readonly gain: GainNode;
     readonly tr: HTMLTableRowElement;
 
-    constructor() {
+    constructor(audioContext: AudioContext) {
+        this.oscilator = audioContext.createOscillator();
+        this.gain = audioContext.createGain();
+
         this.tr = document.createElement('tr');
         this.tr.appendChild(document.createElement('td')).appendChild(this.createTypeSelect());
         this.tr.appendChild(document.createElement('td')).appendChild(this.createFrequencyInput());
@@ -18,7 +15,6 @@ class Generator {
         this.oscilator.connect(this.gain);
         this.gain.connect(audioContext.destination);
 
-        document.querySelector('tbody')!.appendChild(this.tr);
         this.oscilator.start();
     }
 
@@ -63,7 +59,7 @@ class Generator {
         input.min = '0';
         input.max = '3';
         input.step = '0.05';
-        input.value = '0';
+        input.value = '0.5';
         const change = () => {
             this.gain.gain.value = +input.value;
             text.nodeValue = `${Math.round(+input.value * 100)}%`;
@@ -76,15 +72,3 @@ class Generator {
         return label;
     }
 }
-
-new Generator();
-
-document.getElementById('add')!.addEventListener('click', () => new Generator());
-const pause = document.getElementById('pause') as HTMLInputElement;
-pause.addEventListener('change', () => {
-    if (pause.checked) {
-        audioContext.suspend();
-    } else {
-        audioContext.resume();
-    }
-});
