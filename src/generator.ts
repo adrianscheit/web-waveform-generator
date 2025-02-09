@@ -1,10 +1,12 @@
 export class Generator {
     readonly oscilator: OscillatorNode;
+    readonly waveShaper: WaveShaperNode;
     readonly gain: GainNode;
     readonly tr: HTMLTableRowElement;
 
     constructor(audioContext: AudioContext) {
         this.oscilator = audioContext.createOscillator();
+        this.waveShaper = audioContext.createWaveShaper();
         this.gain = audioContext.createGain();
 
         this.tr = document.createElement('tr');
@@ -12,7 +14,8 @@ export class Generator {
         this.tr.appendChild(document.createElement('td')).appendChild(this.createFrequencyInput());
         this.tr.appendChild(document.createElement('td')).appendChild(this.createGainInput());
 
-        this.oscilator.connect(this.gain);
+        this.oscilator.connect(this.waveShaper);
+        this.waveShaper.connect(this.gain);
         this.gain.connect(audioContext.destination);
 
         this.oscilator.start();
@@ -33,22 +36,20 @@ export class Generator {
     }
 
     private createFrequencyInput(): HTMLLabelElement {
-        const text = document.createTextNode('');
         const input = document.createElement('input');
-        input.type = 'range';
+        input.type = 'number';
         input.min = '1';
-        input.max = '20000';
+        input.max = '50000';
         input.step = '1';
         input.value = '432';
         const change = () => {
             this.oscilator.frequency.value = +input.value;
-            text.nodeValue = `${input.value}Hz`;
         };
         input.addEventListener('change', () => change());
         change();
         const label = document.createElement('label');
         label.appendChild(input);
-        label.appendChild(text);
+        label.appendChild(document.createTextNode('Hz'));
         return label;
     }
 
