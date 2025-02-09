@@ -1,4 +1,4 @@
-import { Channels } from "./channel";
+import { Channels } from "./channels";
 
 const audioContext = new AudioContext();
 audioContext.suspend();
