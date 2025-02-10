@@ -1,7 +1,7 @@
 {
-  "name": "web-osciloscope",
+  "name": "web-wafeform-generator",
   "version": "0.0.1",
-  "description": "WEB Osciloscope",
+  "description": "WEB Waveform Generator",
   "main": "index.js",
   "scripts": {
     "build": "webpack"

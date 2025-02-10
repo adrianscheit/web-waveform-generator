@@ -1,12 +1,16 @@
+import { WaveShaperCurve } from "./wave-shaper-curve";
+
 export class Generator {
     readonly oscilator: OscillatorNode;
     readonly waveShaper: WaveShaperNode;
+    readonly waveShaperCurve: WaveShaperCurve = new WaveShaperCurve();
     readonly gain: GainNode;
     readonly tr: HTMLTableRowElement;
 
     constructor(audioContext: AudioContext) {
         this.oscilator = audioContext.createOscillator();
         this.waveShaper = audioContext.createWaveShaper();
+        this.waveShaper.curve = this.waveShaperCurve.curve;
         this.gain = audioContext.createGain();
 
         this.tr = document.createElement('tr');
@@ -55,14 +59,31 @@ export class Generator {
         return label;
     }
 
-    private createWaveShaperInput(): HTMLLabelElement {
+    private createWaveShaperInput(): HTMLElement {
+        const div = document.createElement('form');
+        div.appendChild(Generator.createPercentageInput('Slope:', (value) => this.waveShaperCurve.setSlope(value)));
+        div.appendChild(Generator.createPercentageInput('Shift (PWM):', (value) => this.waveShaperCurve.setShift(value)));
+        const reset = div.appendChild(document.createElement('input'));
+        reset.type = 'reset';
+        div.addEventListener('reset', () => {
+            this.waveShaperCurve.setSlope(50);
+            this.waveShaperCurve.setShift(50);
+        });
+        div.appendChild(this.waveShaperCurve.canvas);
+        return div;
+    }
+
+    private static createPercentageInput(labelText: string, change: (value: number) => void): HTMLLabelElement {
         const label = document.createElement('label');
+        label.appendChild(document.createTextNode(labelText));
         const percentInput = label.appendChild(document.createElement('input'));
         percentInput.type = 'number';
         percentInput.min = '0';
         percentInput.max = '100';
         percentInput.step = '1';
-        percentInput.disabled = true;
+        percentInput.value = '50';
+        percentInput.defaultValue = '50';
+        percentInput.addEventListener('change', () => change(+percentInput.value));
         label.appendChild(document.createTextNode('%'));
         return label;
     }
