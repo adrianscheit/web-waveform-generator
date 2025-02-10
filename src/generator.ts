@@ -21,7 +21,6 @@ export class Generator {
 
         this.oscilator.connect(this.waveShaper);
         this.waveShaper.connect(this.gain);
-        this.gain.connect(audioContext.destination);
 
         this.oscilator.start();
         console.log(this);

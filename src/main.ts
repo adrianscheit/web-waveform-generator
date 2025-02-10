@@ -19,3 +19,7 @@ pause.addEventListener('change', () => {
         audioContext.resume();
     }
 });
+
+setInterval(() => {
+    channels.channels.forEach((it) => it.drawAnalyser());
+}, 500);
